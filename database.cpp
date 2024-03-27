@@ -14,10 +14,15 @@ void init(Database& database) {
 }
 
 void add(Database& database, Entry* entry) {
-  Database next;
-  init(next);
-  database.storage = entry;
-  database.next = &next;
+  Database* newDatabase = new Database;
+  Database* next = &database;
+  newDatabase->next = NULL;
+  newDatabase->storage = entry;
+  while (next->next != NULL) {
+    next = next->next;
+  }
+
+  next->next = newDatabase;
 }
 
 Entry get(Database &database, std::string &key) {
@@ -33,7 +38,9 @@ Entry get(Database &database, std::string &key) {
     current = current->next;
   }
 
-  return {};
+  Entry err;
+  err.key = "";
+  return err;
 }
 
 void remove(Database &database, std::string &key) {
@@ -43,6 +50,20 @@ void remove(Database &database, std::string &key) {
       current->storage != NULL &&
       current->storage->key == key
     ) {
+      switch (current->storage->type) {
+        case Type::DOUBLE:
+          delete (double*) current->storage->value;
+          break;
+        case Type::STRING:
+          delete (std::string*) current->storage->value;
+          break;
+        case Type::INT:
+          delete (int*) current->storage->value;
+          break;
+        case Type::ARRAY:
+          break;
+      }
+
       delete current->storage;
       current->storage = NULL;
     }

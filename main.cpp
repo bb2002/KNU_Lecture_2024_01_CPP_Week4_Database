@@ -1,6 +1,6 @@
 #include <iostream>
 #include "database.h"
-#include "parser.cpp"
+#include "parser.h"
 
 int main() {
   std::cout << "Welcome to BallbotDB Monitor" << std::endl;
