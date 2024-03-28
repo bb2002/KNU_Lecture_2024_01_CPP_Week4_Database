@@ -23,7 +23,7 @@ namespace Parser {
   void _addArray(Array* root) {
     std::string type;
     int size;
-    std::cout << "type (int, double, string, array):";
+    std::cout << "type (int, double, string, array): ";
     std::cin >> type;
     std::cout << "size: ";
     std::cin >> size;
@@ -132,7 +132,7 @@ namespace Parser {
 
     std::cout << "key: ";
     std::cin >> (*data).key;
-    std::cout << "type (int, double, string, array):";
+    std::cout << "type (int, double, string, array): ";
     std::cin >> type;
     std::cout << "value: ";
 
