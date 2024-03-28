@@ -3,13 +3,13 @@
 #include "parser.h"
 
 int main() {
-  std::cout << "Welcome to BallbotDB Monitor" << std::endl;
+  // std::cout << "Welcome to BallbotDB Monitor" << std::endl;
   Database db;
   init(db);
 
   std::string command;
   while (true) {
-    std::cout << "command (list, add, get, del, exit) ";
+    std::cout << "command (list, add, get, del, exit): ";
     std::cin >> command;
 
     if (command == "list") {
@@ -29,7 +29,6 @@ int main() {
     }
 
     if (command == "exit") {
-      std::cout << "Goodbye" << std::endl;
       break;
     }
   }
