@@ -85,23 +85,22 @@ namespace Parser {
     std::string key;
     std::cout << "Key: ";
     std::cin >> key;
-    Entry entry = get(db, key);
+    Entry* entry = get(db, key);
 
-    if (entry.key == "") {
-      // 잘못된 키의 경우
+    if (entry == NULL) {
       return;
     }
 
-    std::cout << entry.key << ": ";
-    switch (entry.type) {
+    std::cout << entry->key << ": ";
+    switch (entry->type) {
       case Type::STRING:
-        std::cout << *(std::string*)entry.value << std::endl;
+        std::cout << *(std::string*)entry->value << std::endl;
         break;
       case Type::INT:
-        std::cout << *(int*)entry.value << std::endl;
+        std::cout << *(int*)entry->value << std::endl;
         break;
       case Type::DOUBLE:
-        std::cout << *(double*)entry.value << std::endl;
+        std::cout << *(double*)entry->value << std::endl;
         break;
       case Type::ARRAY:
         std::cout << "TODO ARRAY" << std::endl;

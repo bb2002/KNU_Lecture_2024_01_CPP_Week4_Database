@@ -32,7 +32,7 @@ void init(Database &database);
 void add(Database &database, Entry *entry);
 
 // 데이터베이스에서 키에 해당하는 엔트리를 찾는다.
-Entry get(Database &database, std::string &key);
+Entry *get(Database &database, std::string &key);
 
 // 데이터베이스에서 키에 해당하는 엔트리를 제거한다.
 void remove(Database &database, std::string &key);
