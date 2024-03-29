@@ -38,8 +38,7 @@ namespace Parser {
         std::cout << "item[" << i << "]: ";
         std::cin >> cont[i];
       }
-    }
-    if (type == "int") {
+    } else if (type == "int") {
       auto cont = new int[size];
       root->items = cont;
       root->size = size;
@@ -49,8 +48,7 @@ namespace Parser {
         std::cout << "item[" << i << "]: ";
         std::cin >> cont[i];
       }
-    }
-    if (type == "double") {
+    } else if (type == "double") {
       auto cont = new double[size];
       root->items = cont;
       root->size = size;
@@ -60,8 +58,7 @@ namespace Parser {
         std::cout << "item[" << i << "]: ";
         std::cin >> cont[i];
       }
-    }
-    if (type == "array") {
+    } else if (type == "array") {
       auto cont = new Array[size];
       root->items = cont;
       root->size = size;
@@ -70,6 +67,8 @@ namespace Parser {
       for (int i = 0; i < size; ++i) {
         _addArray(&cont[i]);
       }
+    } else {
+      std::cout << "Invalid type exception" << std::endl;
     }
   }
 
@@ -82,7 +81,7 @@ namespace Parser {
           std::cout << ((int*)array->items)[i];
           break;
         case Type::STRING:
-          std::cout << ((std::string*)array->items)[i];
+          std::cout << "\"" << ((std::string*)array->items)[i] << "\"";
           break;
         case Type::DOUBLE:
           std::cout << ((double*)array->items)[i];
@@ -107,7 +106,7 @@ namespace Parser {
         std::cout << data->key << ": ";
         switch (data->type) {
           case Type::STRING:
-            std::cout << *(std::string*)data->value << std::endl;
+            std::cout << "\"" << *(std::string*)data->value << "\"" << std::endl;
             break;
           case Type::INT:
             std::cout << *(int*)data->value << std::endl;
@@ -124,6 +123,8 @@ namespace Parser {
       }
       current = current->next;
     }
+
+    std::cout << std::endl;
   }
 
   void _add(Database& db) {
@@ -141,32 +142,30 @@ namespace Parser {
       data->value = new std::string;
       std::getchar();
       std::getline(std::cin, *(std::string*)data->value);
-    }
-
-    if (type == "int") {
+    } else if (type == "int") {
       std::string tmp;
       data->type = Type::INT;
       data->value = new int;
       std::cin >> tmp;
       *(int*)data->value = std::stoi(tmp);
-    }
-
-    if (type == "double") {
+    } else if (type == "double") {
       std::string tmp;
       data->type = Type::DOUBLE;
       data->value = new double;
       std::cin >> tmp;
       *(double*)data->value = std::stod(tmp);
-    }
-
-    if (type == "array") {
+    } else if (type == "array") {
       Array* array = new Array;
       _addArray(array);
       data->type = Type::ARRAY;
       data->value = array;
+    } else {
+      std::cout << "Invalid type exception" << std::endl;
+      return;
     }
 
     add(db, data);
+    std::cout << std::endl;
   }
 
   void _get(Database& db) {
@@ -182,7 +181,7 @@ namespace Parser {
     std::cout << entry->key << ": ";
     switch (entry->type) {
       case Type::STRING:
-        std::cout << *(std::string*)entry->value << std::endl;
+        std::cout << "\"" << *(std::string*)entry->value << "\"" << std::endl;
         break;
       case Type::INT:
         std::cout << *(int*)entry->value << std::endl;
@@ -204,6 +203,18 @@ namespace Parser {
     std::cout << "key: ";
     std::cin >> key;
     remove(db, key);
+  }
+
+  void _delAll(Database& db) {
+    Database* current = &db;
+    while(current != NULL) {
+      if (current->storage != NULL) {
+        remove(*current, current->storage->key);
+      }
+      Database* removed = current;
+      current = current->next;
+      delete removed;
+    }
   }
 }
 

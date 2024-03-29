@@ -14,6 +14,26 @@ void init(Database& database) {
   database.next = NULL;
 }
 
+void _releaseArray(Array* array) {
+  if (array->type == Type::ARRAY) {
+    for (int i = 0; i < array->size; ++i) {
+      _releaseArray(&((Array*)array->items)[i]);
+    }
+  } else {
+    switch (array->type) {
+      case Type::DOUBLE:
+        delete[] (double*) array->items;
+        break;
+      case Type::STRING:
+        delete[] (std::string*) array->items;
+        break;
+      case Type::INT:
+        delete[] (int*) array->items;
+        break;
+    }
+  }
+}
+
 void release(Entry* target) {
   if (target == NULL) {
     return;
@@ -30,6 +50,7 @@ void release(Entry* target) {
       delete (int*) target->value;
       break;
     case Type::ARRAY:
+      _releaseArray((Array*)target->value);
       break;
   }
 
